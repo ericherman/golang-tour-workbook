@@ -8,6 +8,12 @@ func add(x int, y int) int {
 	return x + y
 }
 
+// consecutive parameters of the same type,
+// may omit the type from all but the last
+func subtract(x, y int) int {
+	return x - y
+}
+
 func main() {
-	fmt.Println(add(42, 23))
+	fmt.Println(subtract(add(42, 23), 13))
 }
