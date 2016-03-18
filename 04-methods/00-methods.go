@@ -16,4 +16,5 @@ func (v point2d) Abs() float64 {
 func main() {
 	v := point2d{3, 4}
 	fmt.Println(v.Abs())
+	fmt.Println(Abs(v))
 }
