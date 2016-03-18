@@ -10,8 +10,8 @@ var m map[string]point2d
 
 func main() {
 	m = map[string]point2d{
-		"Bell Labs":  point2d{40.68433, -74.39967},
-		"north pole": point2d{90, 0},
+		"Bell Labs":  {40.68433, -74.39967},
+		"north pole": {90, 0},
 	}
 
 	for key := range m {
