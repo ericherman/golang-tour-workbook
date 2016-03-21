@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"sync"
-	"time"
 )
 
 type Fetcher interface {
@@ -39,7 +38,7 @@ func (mm *MuxMap) DoneWG() {
 
 // Crawl uses fetcher to recursively crawl
 // pages starting with url, to a maximum of depth.
-func Crawl(url string, depth int, fetcher Fetcher, mm MuxMap) {
+func Crawl(url string, depth int, fetcher Fetcher, mm *MuxMap) {
 	if depth <= 0 {
 		return
 	}
@@ -63,7 +62,7 @@ func Crawl(url string, depth int, fetcher Fetcher, mm MuxMap) {
 	for _, ux := range urls {
 		// fmt.Printf("Adding wg for: %v (from: %v)\n", ux, url)
 		mm.AddWG()
-		go func(u string, d int, f Fetcher, m MuxMap) {
+		go func(u string, d int, f Fetcher, m *MuxMap) {
 			Crawl(u, d, f, m)
 			defer mm.DoneWG()
 		}(ux, depth-1, fetcher, mm)
@@ -73,9 +72,8 @@ func Crawl(url string, depth int, fetcher Fetcher, mm MuxMap) {
 
 func main() {
 	mm := MuxMap{m: make(map[string]int)}
-	Crawl("http://golang.org/", 4, fetcher, mm)
-	time.Sleep(time.Second) // THIS IS SO LAME!
-	mm.wg.Wait()            // Why doesn't this work as expected?
+	Crawl("http://golang.org/", 4, fetcher, &mm)
+	mm.wg.Wait()
 }
 
 // fakeFetcher is Fetcher that returns canned results.
